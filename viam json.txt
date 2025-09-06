@@ -1,0 +1,51 @@
+{
+  "components": [
+    {
+      "name": "camera",
+      "api": "rdk:component:camera",
+      "model": "viam:camera:csi-pi",
+      "attributes": {
+        "width_px": 640,
+        "height_px": 480,
+        "frame_rate": 30
+      }
+    }
+  ],
+  "services": [
+    {
+      "name": "vision",
+      "api": "rdk:service:vision",
+      "model": "rdk:builtin:mlmodel",
+      "attributes": {
+        "mlmodel_name": "mlmodel",
+        "default_minimum_confidence": 0.7
+      },
+      "depends_on": [
+        "camera"
+      ]
+    },
+    {
+      "name": "mlmodel",
+      "api": "rdk:service:mlmodel",
+      "model": "viam:mlmodel-tflite:tflite_cpu",
+      "attributes": {
+        "model_path": "/home/pi/model.tflite",
+        "label_path": "/home/pi/labels.txt"
+      }
+    }
+  ],
+  "modules": [
+    {
+      "type": "registry",
+      "name": "viam_csi-cam-pi",
+      "module_id": "viam:csi-cam-pi",
+      "version": "latest"
+    },
+    {
+      "type": "registry",
+      "name": "viam_tflite_cpu",
+      "module_id": "viam:tflite_cpu",
+      "version": "latest"
+    }
+  ]
+}
